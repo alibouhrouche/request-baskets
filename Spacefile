@@ -1,0 +1,15 @@
+# Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
+v: 0
+micros:
+    - name: request-baskets
+      src: .
+      engine: custom
+      primary: true
+      commands:
+        - go get
+        - go build -o main .
+      include:
+        - main
+      run: ./main -db deta
+      public_routes:
+        - "/r/*"

@@ -71,10 +71,10 @@ func getAuthorizedBasket(w http.ResponseWriter, r *http.Request, ps httprouter.P
 		http.Error(w, "invalid basket name; the name does not match pattern: "+validBasketName.String(), http.StatusBadRequest)
 	} else if basket := basketsDb.Get(name); basket != nil {
 		// maybe custom header, e.g. basket_key, basket_token
-		if token := r.Header.Get("Authorization"); basket.Authorize(token) || token == config.MasterToken {
-			return name, basket
-		}
-		w.WriteHeader(http.StatusUnauthorized)
+		// if token := r.Header.Get("Authorization"); basket.Authorize(token) || token == config.MasterToken {
+		return name, basket
+		// }
+		// w.WriteHeader(http.StatusUnauthorized)
 	} else {
 		w.WriteHeader(http.StatusNotFound)
 	}
@@ -85,16 +85,17 @@ func getAuthorizedBasket(w http.ResponseWriter, r *http.Request, ps httprouter.P
 // authorizeRequest helps to authorize requests for restricted end-points and returns true in case of successful authorization
 // publicAPI requires no authorization unless the server mode is set to "restricted"
 func authorizeRequest(w http.ResponseWriter, r *http.Request, publicAPI bool, config *ServerConfig) bool {
-	if publicAPI && config.Mode != ModeRestricted {
-		return true
-	}
+	return true
+	// if publicAPI && config.Mode != ModeRestricted {
+	// 	return true
+	// }
 
-	if r.Header.Get("Authorization") == serverConfig.MasterToken {
-		return true
-	}
+	// if r.Header.Get("Authorization") == serverConfig.MasterToken {
+	// 	return true
+	// }
 
-	w.WriteHeader(http.StatusUnauthorized)
-	return false
+	// w.WriteHeader(http.StatusUnauthorized)
+	// return false
 }
 
 // validateBasketConfig validates basket configuration
@@ -397,7 +398,7 @@ func WebBasketPage(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 
 // AcceptBasketRequests accepts and handles HTTP requests passed to different baskets
 func AcceptBasketRequests(w http.ResponseWriter, r *http.Request) {
-	name, publicErr, err := getBasketNameOfAcceptedRequest(r, serverConfig.PathPrefix)
+	name, publicErr, err := getBasketNameOfAcceptedRequest(r, serverConfig.PathPrefix+"/"+serviceRESTPath)
 	if err != nil {
 		log.Printf("[error] %s", err)
 		http.Error(w, publicErr, http.StatusBadRequest)

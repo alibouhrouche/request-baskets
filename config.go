@@ -4,6 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
+	"strconv"
 	"strings"
 )
 
@@ -16,6 +18,7 @@ const (
 	defaultDatabaseType = DbTypeMemory
 	serviceOldAPIPath   = "baskets"
 	serviceAPIPath      = "api"
+	serviceRESTPath     = "r"
 	serviceUIPath       = "web"
 	serviceName         = "request-baskets"
 	basketNamePattern   = `^[\w\d\-_\.]{1,250}$`
@@ -51,15 +54,20 @@ func (v *arrayFlags) Set(value string) error {
 
 // CreateConfig creates server configuration base on application command line arguments
 func CreateConfig() *ServerConfig {
-	var port = flag.Int("p", defaultServicePort, "HTTP service port")
+	port_env_str, found := os.LookupEnv("PORT")
+	port_env, err := strconv.Atoi(port_env_str)
+	if !found || err != nil {
+		port_env = defaultServicePort
+	}
+	var port = flag.Int("p", port_env, "HTTP service port")
 	var address = flag.String("l", defaultServiceAddr, "HTTP listen address")
 	var initCapacity = flag.Int("size", initBasketCapacity, "Initial basket size (capacity)")
 	var maxCapacity = flag.Int("maxsize", maxBasketCapacity, "Maximum allowed basket size (max capacity)")
 	var pageSize = flag.Int("page", defaultPageSize, "Default page size")
 	var masterToken = flag.String("token", "", "Master token, random token is generated if not provided")
 	var dbType = flag.String("db", defaultDatabaseType, fmt.Sprintf(
-		"Baskets storage type: \"%s\" - in-memory, \"%s\" - Bolt DB, \"%s\" - SQL database",
-		DbTypeMemory, DbTypeBolt, DbTypeSQL))
+		"Baskets storage type: \"%s\" - Detabase, \"%s\" - in-memory, \"%s\" - Bolt DB, \"%s\" - SQL database",
+		DbTypeDeta, DbTypeMemory, DbTypeBolt, DbTypeSQL))
 	var dbFile = flag.String("file", "./baskets.db", "Database location, only applicable for file or SQL databases")
 	var dbConnection = flag.String("conn", "", "Database connection string for SQL databases, if undefined \"file\" argument is considered")
 	var prefix = flag.String("prefix", "", "Service URL path prefix")

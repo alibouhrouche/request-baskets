@@ -95,6 +95,8 @@ func CreateServer(config *ServerConfig) *http.Server {
 
 func createBasketsDatabase(dbtype string, file string, conn string) BasketsDatabase {
 	switch dbtype {
+	case DbTypeDeta:
+		return NewDetabase()
 	case DbTypeMemory:
 		return NewMemoryDatabase()
 	case DbTypeBolt:
