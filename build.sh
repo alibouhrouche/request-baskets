@@ -1,0 +1,1 @@
+go build -o main -ldflags="-X main.GitCommit=$(git rev-parse HEAD) -X main.GitVersion=$(git describe) -X main.GitCommitShort=$(git rev-parse --short HEAD) -X main.GitBranch=$(git rev-parse --abbrev-ref HEAD)" .

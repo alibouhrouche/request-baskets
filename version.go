@@ -7,6 +7,8 @@ var (
 	GitCommit = "n/a"
 	// GitCommitShort is a placeholder to inject git commit, result of `git rev-parse --short HEAD`
 	GitCommitShort = "n/a"
+	// GitBranch is a placeholder to inject git branch, result of `git rev-parse --abbrev-ref HEAD`
+	GitBranch = "n/a"
 )
 
 // Version describes application version

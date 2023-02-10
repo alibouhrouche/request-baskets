@@ -22,7 +22,7 @@ const (
 	serviceUIPath       = "web"
 	serviceName         = "request-baskets"
 	basketNamePattern   = `^[\w\d\-_\.]{1,250}$`
-	sourceCodeURL       = "https://github.com/darklynx/request-baskets"
+	sourceCodeURL       = "https://github.com/alibouhrouche/request-baskets"
 )
 
 // ServerConfig describes server configuration.

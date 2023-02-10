@@ -1,5 +1,7 @@
 # Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
 v: 0
+app_name: Request Baskets
+icon: icon.png
 micros:
     - name: request-baskets
       src: .
@@ -7,7 +9,7 @@ micros:
       primary: true
       commands:
         - go get
-        - go build -o main .
+        - source ./build.sh
       include:
         - main
       run: ./main -db deta
